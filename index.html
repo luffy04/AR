@@ -5,6 +5,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
+  <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.1.3/webcomponents-loader.js"></script>
   <script src="https://unpkg.com/ml5@0.1.1/dist/ml5.min.js"></script>
  </head>
 
@@ -14,7 +15,9 @@
       <video id="video" autoplay muted="true" style="position: absolute;top: 0;left: 0;z-index: 1" width="240" height="180"></video>
       <!-- <img id="cat1" style="position: absolute;z-index: 3;left:300"/> -->
     </div>
-    
+    <div style="position: absolute;z-index: 3">
+      <model-viewer src="./batman.glb" camera-orbit="0deg 90deg 4m" auto-rotate  ></model-viewer>
+    </div>
      
     <span id="dot0" hidden style="position: absolute;background-color: red;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
     <span id="dot1" hidden style="position: absolute;background-color: red;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
@@ -33,14 +36,14 @@
     <span id="dot14" hidden style="position: absolute;background-color: green;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
     <span id="dot15" hidden style="position: absolute;background-color: green;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
     <span id="dot16" hidden style="position: absolute;background-color: green;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
-    <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line1" stroke="red"/></svg>
+    <!-- <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line1" stroke="red"/></svg>
     <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line2" stroke="red"/></svg>
     <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line3" stroke="red"/></svg>
     <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line4" stroke="red"/></svg>
     <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line5" stroke="red"/></svg>
     <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line6" stroke="red"/></svg>
     <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line7" stroke="red"/></svg>
-    <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line8" stroke="red"/></svg>
+    <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line8" stroke="red"/></svg> -->
   </body>
   <!-- Place your code in the script tag below. You can also use an external .js file -->
   <script>
@@ -166,7 +169,7 @@ btn.onclick=function(e){
             // line8.setAttribute("y1",poses[11].position.y);
             // line8.setAttribute("x2",poses[5].position.x);
             // line8.setAttribute("y2",poses[5].position.y);
-            console.log(poses[6].position.x+" "+poses[6].position.y)
+            // console.log(poses[6].position.x+" "+poses[6].position.y)
           }
           
          })
@@ -212,4 +215,12 @@ btn.onclick=function(e){
   }
 
   </script>
+  <script type="module"
+        src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js">
+    </script>
+
+    <!-- Loads <model-viewer> for old browsers like IE11: -->
+    <script nomodule
+        src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js">
+    </script>
 </html>
