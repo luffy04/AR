@@ -12,7 +12,7 @@
   <body style="position: relative;">
     <button style="position: absolute;top:350;z-index:20">Start camera</button>
     <div>
-      <video id="video" autoplay muted="true" style="position: absolute;top: 0;left: 0;z-index: 1" width="100%" height="100%"></video>
+      <video id="video" autoplay muted="true" style="position: absolute;top: 0;left: 0;z-index: 1"></video>
       <!-- <img id="cat1" style="position: absolute;z-index: 3;left:300"/> -->
     </div>
     <div style="position: absolute;z-index: 3">
@@ -75,7 +75,8 @@
     var line8=document.getElementById("line8");
 
 var x1,x2,y1,y2,length,left,top;
-
+document.querySelector('video').width=screen.width;
+document.querySelector('video').height=screen.height;
 
 
 // repeat();
