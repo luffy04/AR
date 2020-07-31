@@ -1,66 +1,215 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Hello!</title>
-    <meta charset="utf-8">
-    <script src="https://aframe.io/releases/0.9.0/aframe.min.js"></script>
-    <script src="https://rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
-  </head>  
-    
-<body style='margin : 0px; overflow: hidden;'>
-  <a-scene embedded arjs>
-    <!-- create your content here. just a box for now -->
-    <a-box position='0 0.5 0' material='opacity: 0.5;'></a-box>
-    <!-- define a camera which will move according to the marker position -->
-    <a-marker preset='hiro'></a-marker>
-    <a-entity camera look-controls position="0 1.6 0"></a-entity>
-  </a-scene>
-
-      <input style="position: fixed;top:0;left:43px;z-index: 3" type="range" min="1" max="100" value="2" class="slider" id="myRange" onchange="updateX(this.value)">
-    
-      <input style="position:fixed;top:30px;left:88px;z-index: 3" type="range" min="1" max="100" value="3" class="slider" id="myRange" onchange="updateY(this.value)">
-    <script>
-      function updateX(value){
-        document.getElementById("myimage").getAttribute("scale").x=value;
-        console.log(value)
-      }
-
-      function updateY(value){
-        document.getElementById("myimage").getAttribute("scale").y=value;
-        console.log(value)
-      }
-
-      
-    </script>
-  <script>
-  console.log("Hello");
-  </script>
-  </body>
-</html>      
-
-<!-- <!DOCTYPE html>
 <html>
-<head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>GeoAR.js demo</title>
-    <script src='https://aframe.io/releases/0.9.2/aframe.min.js'></script>
-    <script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
-    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-    <script>
-        THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
-    </script>
-</head>
+  <head>
+    <!-- Load TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
+  <script src="https://unpkg.com/ml5@0.1.1/dist/ml5.min.js"></script>
+ </head>
 
-<body style='margin: 0; overflow: hidden;'>
-    <a-scene
-        vr-mode-ui="enabled: false"
-        embedded
-        arjs='sourceType: webcam; debugUIEnabled: false;'>
+  <body style="position: relative;">
+    <button style="position: absolute;top:350">Start camera</button>
+    <div>
+      <video id="video" autoplay muted="true" style="position: absolute;top: 0;left: 0;z-index: 1" width="240" height="180"></video>
+      <!-- <img id="cat1" style="position: absolute;z-index: 3;left:300"/> -->
+    </div>
+    
+     
+    <span id="dot0" hidden style="position: absolute;background-color: red;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot1" hidden style="position: absolute;background-color: red;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot2" hidden style="position: absolute;background-color: red;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot3" hidden style="position: absolute;background-color: red;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot4" hidden style="position: absolute;background-color: red;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot5" hidden style="position: absolute;background-color: blue;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot6" hidden style="position: absolute;background-color: blue;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot7" hidden style="position: absolute;background-color: blue;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot8" hidden style="position: absolute;background-color: blue;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot9" hidden style="position: absolute;background-color: blue;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot10" hidden style="position: absolute;background-color: blue;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot11" hidden style="position: absolute;background-color: green;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot12" hidden style="position: absolute;background-color: green;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot13" hidden style="position: absolute;background-color: green;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot14" hidden style="position: absolute;background-color: green;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot15" hidden style="position: absolute;background-color: green;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <span id="dot16" hidden style="position: absolute;background-color: green;z-index: 3;width: 10;height: 10;border-radius: 50%"></span>
+    <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line1" stroke="red"/></svg>
+    <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line2" stroke="red"/></svg>
+    <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line3" stroke="red"/></svg>
+    <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line4" stroke="red"/></svg>
+    <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line5" stroke="red"/></svg>
+    <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line6" stroke="red"/></svg>
+    <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line7" stroke="red"/></svg>
+    <svg width="320" height="240" style="position: fixed;z-index: 3"><line id="line8" stroke="red"/></svg>
+  </body>
+  <!-- Place your code in the script tag below. You can also use an external .js file -->
+  <script>
+    var flipHorizontal = false;
+    // var img = new Image(180,350);
 
-        <a-entity gltf-model="./Tai.gltf" rotation="0 180 0" scale="0.15 0.15 0.15" gps-entity-place="longitude: 77.090880; latitude: =28.586860;" animation-mixer/>
+    // img.crossOrigin = "anonymous";
+// document.getElementById("cat1").src="IMG.png";
+// img.src="half1.png"
 
-        <a-camera gps-camera rotation-reader></a-camera>
-    </a-scene>
-</body>
-</html> -->
+// document.getElementById("cat").width="350";
+// document.getElementById("cat").height="240"
+// document.getElementById("cat1").src="half1.png";
+
+// document.getElementById("cat1").height="180";
+// document.getElementById("cat1").width="240";
+
+// img.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQRJRWJlGzLJ5FLE29H-atz2cnfg4ILpcZg5A&usqp=CAU"; 
+// img.src="https://images-na.ssl-images-amazon.com/images/I/61dZ8195v1L._UL1500_.jpg";
+// https://images-na.ssl-images-amazon.com/images/I/61dZ8195v1L._UL1500_.jpg
+    var btn = document.querySelector('button');
+    var line1=document.getElementById("line1");
+    var line2=document.getElementById("line2");
+    var line3=document.getElementById("line3");
+    var line4=document.getElementById("line4");
+    var line5=document.getElementById("line5");
+    var line6=document.getElementById("line6");
+    var line7=document.getElementById("line7");
+    var line8=document.getElementById("line8");
+
+var x1,x2,y1,y2,length,left,top;
+
+
+
+// repeat();
+
+
+var video = document.querySelector('video');
+
+btn.onclick=function(e){
+
+
+
+  navigator.mediaDevices.getUserMedia({audio:true,video:true})
+    .then(function(stream){
+      var video = document.querySelector('video');
+       if ("srcObject" in video) {
+           video.srcObject = stream;
+       } else {
+           video.src = window.URL.createObjectURL(stream);
+           
+       }
+       video.onloadedmetadata = function(e) {
+         video.play();
+         var posenet=ml5.poseNet(video,model);
+         // setInterval(function(){
+          posenet.on("pose",function(pose){
+          for(let i=0;i<pose.length;i++){ 
+            var poses=pose[i].pose.keypoints;
+            
+            
+            for(let j=0;j<poses.length;j++){
+              if(poses[j].score>0.2 && poses[j].position.x<320 && poses[j].position.y<180){
+
+                document.getElementById(`dot${j}`).style.display="block";
+                document.getElementById(`dot${j}`).style.top=poses[j].position.y;
+                document.getElementById(`dot${j}`).style.left=poses[j].position.x;
+              }else{
+                document.getElementById(`dot${j}`).style.display="none";
+              }
+            }
+            if(poses[5].score>0.2 && poses[6].score>0.2){
+              var videolength=Math.sqrt(Math.pow(poses[6].position.y-poses[5].position.y,2)+Math.pow(poses[6].position.x-poses[5].position.x,2))
+              // console.log(videolength+" "+length)
+              // if(videolength>length){
+              //   document.getElementById("cat1").width=videolength;
+              //   img.width=videolength;
+              //   length=videolength;
+              // }else{
+              //   document.getElementById("cat1").width=videolength;
+              //   img.width=videolength;
+              //   length=videolength
+              // }
+              // document.getElementById("cat1").style.left=poses[6].position.x;
+              // document.getElementById("cat1").style.top=poses[6].position.y;
+            }
+            // line1.setAttribute("x1",poses[6].position.x);
+            // line1.setAttribute("y1",poses[6].position.y);
+            // line1.setAttribute("x2",poses[5].position.x);
+            // line1.setAttribute("y2",poses[5].position.y);
+
+            // line2.setAttribute("x1",poses[7].position.x);
+            // line2.setAttribute("y1",poses[7].position.y);
+            // line2.setAttribute("x2",poses[5].position.x);
+            // line2.setAttribute("y2",poses[5].position.y);
+
+            // line3.setAttribute("x1",poses[6].position.x);
+            // line3.setAttribute("y1",poses[6].position.y);
+            // line3.setAttribute("x2",poses[8].position.x);
+            // line3.setAttribute("y2",poses[8].position.y);
+
+            // line4.setAttribute("x1",poses[8].position.x);
+            // line4.setAttribute("y1",poses[8].position.y);
+            // line4.setAttribute("x2",poses[10].position.x);
+            // line4.setAttribute("y2",poses[10].position.y);
+
+            // line5.setAttribute("x1",poses[7].position.x);
+            // line5.setAttribute("y1",poses[7].position.y);
+            // line5.setAttribute("x2",poses[9].position.x);
+            // line5.setAttribute("y2",poses[9].position.y);
+
+            // line6.setAttribute("x1",poses[11].position.x);
+            // line6.setAttribute("y1",poses[11].position.y);
+            // line6.setAttribute("x2",poses[12].position.x);
+            // line6.setAttribute("y2",poses[12].position.y);
+
+            // line7.setAttribute("x1",poses[6].position.x);
+            // line7.setAttribute("y1",poses[6].position.y);
+            // line7.setAttribute("x2",poses[12].position.x);
+            // line7.setAttribute("y2",poses[12].position.y);
+
+            // line8.setAttribute("x1",poses[11].position.x);
+            // line8.setAttribute("y1",poses[11].position.y);
+            // line8.setAttribute("x2",poses[5].position.x);
+            // line8.setAttribute("y2",poses[5].position.y);
+            console.log(poses[6].position.x+" "+poses[6].position.y)
+          }
+          
+         })
+         // },3500)
+       };
+
+     }).catch(function(err){
+      console.log(err.name+" "+err.message);
+     })
+}
+  function model(){
+    console.log("ready")
+  }
+
+
+  function repeat(){
+    
+    var value=posenet.load().then(function(net) {
+    const pose = net.estimateSinglePose(img, {
+      flipHorizontal: true,
+      outputStride:16,
+      scaleFactor:0.5
+    });
+      return pose;
+    }).then(function(pose){
+      
+      // console.log(pose);
+      // for(let j=0;j<pose.keypoints.length;j++){
+        // let keypoints=pose.keypoints[j];
+        if(pose.keypoints[6].score>0.06){
+
+          length=Math.sqrt(Math.pow(pose.keypoints[5].position.x-pose.keypoints[6].position.x,2)+Math.pow(pose.keypoints[5].position.y-pose.keypoints[6].position.y,2))
+          left=pose.keypoints[5].position.x;
+          top-pose.keypoints[5].position.y
+          console.log("length"+length)
+          // var span = document.createElement("SPAN");
+          // span.setAttribute("style",`position: absolute;background-color: red;z-index: 3;width: 10;height: 10;border-radius: 50%;left:${keypoints.position.x};top:${keypoints.position.y}`);
+          // document.body.appendChild(span)          
+        }
+      // }
+      
+    })
+  }
+
+  </script>
+</html>
