@@ -6,6 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
   <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.1.3/webcomponents-loader.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://unpkg.com/ml5@0.1.1/dist/ml5.min.js"></script>
  </head>
 
@@ -75,8 +76,8 @@
     var line8=document.getElementById("line8");
 
 var x1,x2,y1,y2,length,left,top;
-document.querySelector('video').width=screen.width;
-document.querySelector('video').height=screen.height;
+document.querySelector('video').width=$(window).width();
+document.querySelector('video').height=$(window).height();
 
 
 // repeat();
