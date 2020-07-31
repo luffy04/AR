@@ -107,7 +107,7 @@ btn.onclick=function(e){
             
             
             for(let j=0;j<poses.length;j++){
-              if(poses[j].score>0.2 && poses[j].position.x<320 && poses[j].position.y<180){
+              if(poses[j].score>0.2 && poses[j].position.x<screen.width && poses[j].position.y<screen.height){
 
                 document.getElementById(`dot${j}`).style.display="block";
                 document.getElementById(`dot${j}`).style.top=poses[j].position.y;
