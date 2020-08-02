@@ -77,7 +77,7 @@ btn.onclick=function(e){
             poses=pose[0].pose.keypoints;
             if(document.getElementById("set").style.display=="none"){
               
-              if(poses[5].score >0.2 && poses[6].score>0.2 && poses[11].score>0.2 && poses[12].score>0.2){
+              if(poses[5].score >0.2 && poses[6].score>0.2){
                 m1=(poses[6].position.y-poses[5].position.y)/(poses[6].position.x-poses[5].position.x);
                 m2=(initial[6].position.y-initial[5].position.y)/(initial[6].position.x-initial[5].position.x);
                 var angleX=Math.atan((m1-m2)/(1+m1*m2))*57.2958;
