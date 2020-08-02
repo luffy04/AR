@@ -18,7 +18,8 @@
  </head>
 
   <body style="position: relative;">
-    <button style="position: absolute;top:350;z-index: 20">Start camera</button>
+    <button id="start" style="position: absolute;top:350;z-index: 20">Start camera</button>
+    <button id="set" style="position: absolute;top:350;right:0;z-index: 20;display:none">Set</button>
     <div>
       <video id="video" autoplay muted="true" style="position: absolute;top: 0;left: 0;z-index: 1"></video>
     </div>
@@ -31,8 +32,8 @@
   <script>
     var flipHorizontal = false;
     
-    var btn = document.querySelector('button');
-    
+    var btn = document.getElementById('start');
+    var btn1= document.getElementById("set")
 
 var x1,x2,y1,y2,length,left,top;
 document.querySelector('video').width=$(window).width();
@@ -43,6 +44,14 @@ document.querySelector('video').height=$(window).height();
 
 
 var video = document.querySelector('video');
+var poses;
+var initial;
+
+btn1.onclick=function(e){
+  initial=poses;
+  console.log(initial);
+  document.getElementById("set").style.display="none";
+}
 
 btn.onclick=function(e){
 
@@ -58,40 +67,44 @@ btn.onclick=function(e){
            
        }
        video.onloadedmetadata = function(e) {
+        document.getElementById("set").style.display="inline-block";
          video.play();
          var posenet=ml5.poseNet(video,model);
          // setInterval(function(){
           var flag=0;
-          var m1=0,m2=0,m3=0;m4=0;
+          var m1=0,m2=0,m3=0;m4=0,x=0;
           posenet.on("pose",function(pose){
-            var poses=pose[0].pose.keypoints;
-            // console.log(poses[i]);
-            if(poses[5].score >0.2 && poses[6].score>0.2 && poses[11].score>0.2 && poses[12].score>0.2){
-              // if(flag==0){
-              //   m1=(poses[6].position.y-poses[5].position.y)/(poses[6].position.x-poses[5].position.x);
-              //   m3=(poses[11].position.y-poses[5].position.y)/(poses[11].position.x-poses[5].position.x);
-              //   flag=1;
-              // }else{
-              //   m2=(poses[6].position.y-poses[5].position.y)/(poses[6].position.x-poses[5].position.x);
-              //   m4=(poses[11].position.y-poses[5].position.y)/(poses[11].position.x-poses[5].position.x);
-              //   var angleX=Math.atan(Math.abs((m1-m2)/(1+m1*m2)));
-              //   var angleY=1.5708+Math.atan(Math.abs((m3-m4)/(1+m3*m4)));
-              //   // console.log(angleX+" "+angleY)
-              //   document.getElementById("model").setAttribute("camera-orbit",`${angleX}rad ${angleY}rad 100%`)
-              //   flag=0;
-              // }
-              m1=(poses[11].position.y-poses[5].position.y)/(poses[11].position.x-poses[5].position.x);
-              m2=(poses[12].position.y-poses[6].position.y)/(poses[12].position.x-poses[6].position.x);
-              var angleX=57.2958*Math.atan(Math.abs((m1-m2)/(1+m1*m2)));
-              m3=(poses[6].position.y-poses[5].position.y)/(poses[6].position.x-poses[5].position.x);
-              m4=(poses[12].position.y-poses[11].position.y)/(poses[12].position.x-poses[11].position.x);
-              var angleY=90+Math.atan(Math.abs((m3-m4)/(1+m3*m4)))*57.2958;
-              document.getElementById("model").setAttribute("camera-orbit",`${angleX}deg ${angleY}deg 100%`)
-            }else{
+            poses=pose[0].pose.keypoints;
+            if(document.getElementById("set").style.display=="none"){
+              
+              if(poses[5].score >0.2 && poses[6].score>0.2 && poses[11].score>0.2 && poses[12].score>0.2){
+                m1=(poses[6].position.y-poses[5].position.y)/(poses[6].position.x-poses[5].position.x);
+                m2=(initial[6].position.y-initial[5].position.y)/(initial[6].position.x-initial[5].position.x);
+                var angleX=Math.atan((m1-m2)/(1+m1*m2))*57.2958;
+                document.getElementById("model").setAttribute("camera-orbit",`${angleX}deg 90deg 100%`)
+                // console.log(angleX);
+                // if(flag==0){
+                //   m1=(poses[6].position.y-poses[5].position.y)/(poses[6].position.x-poses[5].position.x);
+                //   m3=(poses[11].position.y-poses[5].position.y)/(poses[11].position.x-poses[5].position.x);
+                //   if(x!=0){
+                //     var angleX=57.2958*Math.atan(Math.abs((m1-m2)/(1+m1*m2)));
+                //     var angleY=(1.5708+Math.atan(Math.abs((m3-m4)/(1+m3*m4))))*57.2958;
+                //   }
+                //   flag=1;
+                // }else{
+                //   m2=(poses[6].position.y-poses[5].position.y)/(poses[6].position.x-poses[5].position.x);
+                //   m4=(poses[11].position.y-poses[5].position.y)/(poses[11].position.x-poses[5].position.x);
+                //   var angleX=57.2958*Math.atan(Math.abs((m1-m2)/(1+m1*m2)));
+                //   var angleY=(1.5708+Math.atan(Math.abs((m3-m4)/(1+m3*m4))))*57.2958;
+                //   console.log(angleX+" "+angleY)
+                //   // document.getElementById("model").setAttribute("camera-orbit",`${angleX}deg ${angleY}deg 100%`)
+                //   flag=0;
+                //   x++;
+                // }
+              }else{
+                console.log("NO")
+              }
             }
-          // for(let i=0;i<pose.length;i++){ 
-            
-          // }
           
          })
          // },3500)
