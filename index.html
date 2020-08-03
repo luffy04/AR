@@ -19,38 +19,59 @@
 
   <body style="position: relative;">
     <button id="start" style="position: absolute;top:350;z-index: 20">Start camera</button>
-    <button id="set" style="position: absolute;top:350;right:0;z-index: 20;display:none;width:20px;height:40px">Set</button>
+    <button id="set" style="position: absolute;top:350;right:0;z-index: 20;display:none">Set</button>
     <div>
       <video id="video" autoplay muted="true" style="position: absolute;top: 0;left: 0;z-index: 1"></video>
     </div>
+    <input style="position: fixed;top:10px;left:43px;z-index: 22;display: none;" type="range" min="95" max="150" value="100" class="slider" id="myRange" onchange="updateX(this.value)">
     <div style="position: absolute;z-index: 3;width: 100%;height: 100%">
       <model-viewer id="model" src="./Baggy T.glb" camera-orbit="0deg 90deg 100%" style="background-color: transparent;"> 
       </model-viewer>
     </div>
   </body>
-  <!-- Place your code in the script tag below. You can also use an external .js file -->
   <script>
     var flipHorizontal = false;
     
     var btn = document.getElementById('start');
     var btn1= document.getElementById("set")
 
-var x1,x2,y1,y2,length,left,top;
+// var x1,x2,y1,y2,length,left,top;
 document.querySelector('video').width=$(window).width();
 document.querySelector('video').height=$(window).height();
 
+var size=document.getElementById("model").getAttribute("camera-orbit");
 
-// repeat();
+var dec,m2;
+
+function updateX(value){
+  var i=100-value;
+  document.getElementById("model").setAttribute("camera-orbit",`0deg 90deg ${100+i}%`);
+}
+
+for(var i=size.length-1;i>=0;i--){
+  if(size[i]==" "){
+    dec=parseInt(dec);
+    break;
+  }else{
+    if(size[i]!="%"){
+      dec=size[i]+dec;
+    }
+  }
+}
 
 
 var video = document.querySelector('video');
 var poses;
-var initial;
+var initial,length;
+
+
 
 btn1.onclick=function(e){
   initial=poses;
-  console.log(initial);
+  length=Math.sqrt(Math.pow(initial[5].position.x-initial[6].position.x,2)+Math.pow(initial[5].position.y-initial[6].position.y,2));
+  m2=(initial[6].position.y-initial[5].position.y)/(initial[6].position.x-initial[5].position.x);
   document.getElementById("set").style.display="none";
+  document.getElementById("myRange").style.display="none";
 }
 
 btn.onclick=function(e){
@@ -68,20 +89,25 @@ btn.onclick=function(e){
        }
        video.onloadedmetadata = function(e) {
         document.getElementById("set").style.display="inline-block";
+        document.getElementById("myRange").style.display="inline-block";
          video.play();
          var posenet=ml5.poseNet(video,model);
          // setInterval(function(){
           var flag=0;
-          var m1=0,m2=0,m3=0;m4=0,x=0;
+          var m1=0,m3=0;m4=0,x=0;
           posenet.on("pose",function(pose){
             poses=pose[0].pose.keypoints;
             if(document.getElementById("set").style.display=="none"){
               
-              if(poses[5].score >0.2 && poses[6].score>0.2){
-                m1=(poses[6].position.y-poses[5].position.y)/(poses[6].position.x-poses[5].position.x);
-                m2=(initial[6].position.y-initial[5].position.y)/(initial[6].position.x-initial[5].position.x);
-                var angleX=Math.atan((m1-m2)/(1+m1*m2))*57.2958;
-                document.getElementById("model").setAttribute("camera-orbit",`${angleX}deg 90deg 100%`)
+              if(poses[5].score >0.2 && poses[6].score>0.2 && poses[11].score>0.2 && poses[12].score>0.2){
+                m1=(poses[6].position.y-poses[5].position.y)/(poses[6].position.x-poses[5].position.x);     
+                m3=(poses[6].position.y-poses[5].position.y)/(poses[6].position.x-poses[5].position.x);
+                m4=(poses[12].position.y-poses[11].position.y)/(poses[12].position.x-poses[11].position.x);    
+                var newLength=Math.sqrt(Math.pow(poses[5].position.x-poses[6].position.x,2)+Math.pow(poses[5].position.y-poses[6].position.y,2))
+                var perc=((length-newLength)/length)*100;
+                var angleX=-(Math.atan((m1-m2)/(1+m1*m2))*57.2958*2);
+                var angleY=(Math.atan((m3-m4)/(1+m3*m4))*57.2958)+90;
+                document.getElementById("model").setAttribute("camera-orbit",`${angleX}deg ${angleY}deg ${dec+perc}%`)
                 // console.log(angleX);
                 // if(flag==0){
                 //   m1=(poses[6].position.y-poses[5].position.y)/(poses[6].position.x-poses[5].position.x);
