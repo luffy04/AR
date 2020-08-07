@@ -50,7 +50,7 @@
     <a-assets>
       <a-asset id="cesium-man" src="./spidey.glb"></a-asset>
     </a-assets>
-    <a-entity id="walker" gltf-model="#cesium-man" position="1 -1 -5" scale="0.005 0.005 0.005" animation-mixer></a-entity>
+    <a-entity id="walker" gltf-model="#cesium-man" position="1 108 -5" scale="0.005 0.005 0.005" animation-mixer></a-entity>
   </a-scene>
   <script type="text/javascript">
     var video = document.querySelector('video');
@@ -58,7 +58,7 @@
     video.height=$(window).height();
     var size=1;
     var arr=["walker"];
-    var pos=[{x:-1,y:1}]
+    var pos=[{x:-1,y:108}]
     // var arr=[],pos=[];
     navigator.mediaDevices.getUserMedia({audio:true,video:{facingMode:{exact:"environment"}}})
 //     navigator.mediaDevices.getUserMedia({audio:true,video:true})
