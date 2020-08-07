@@ -60,8 +60,8 @@
     var arr=["walker"];
     var pos=[{x:-1,y:1}]
     // var arr=[],pos=[];
-    // navigator.mediaDevices.getUserMedia({audio:true,video:{facingMode:{exact:"environment"}}})
-    navigator.mediaDevices.getUserMedia({audio:true,video:true})
+    navigator.mediaDevices.getUserMedia({audio:true,video:{facingMode:{exact:"environment"}}})
+//     navigator.mediaDevices.getUserMedia({audio:true,video:true})
     .then(function(stream){
       
        if ("srcObject" in video) {
