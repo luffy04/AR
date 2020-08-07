@@ -92,7 +92,7 @@
       // console.log(gamma1+" "+beta1)
       // walker.setAttribute("position",`${x+gamma1} ${y+beta1} -5`);
       for(var i=0;i<arr.length;i++){
-        document.getElementById(arr[i]).setAttribute("position",`${pos[i].x+gamma1} ${pos[i].y+beta1} -5`);
+        document.getElementById(arr[i]).setAttribute("position",`${pos[i].x+Math.trunc(gamma1)} ${pos[i].y+Math.trunc(beta1)} -5`);
         // console.log(document.getElementById(arr[i]).getAttribute("position"))
         document.getElementById("text").innerHTML=`${pos[i].x+gamma1};${pos[i].y+beta1}`
       }
