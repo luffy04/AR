@@ -36,6 +36,17 @@
       #text{
         color: blue;
       }
+      .a-canvas{
+        left: 0;
+        position: absolute;
+        overflow: scroll;
+      }
+      a-scene{
+        position: absolute;
+        left: 0px;
+        width: 49px;
+        height: 87px;
+      }
     </style>
   </head>  
     
@@ -48,9 +59,9 @@
   </ul>
   <a-scene ar>
     <a-assets>
-      <a-asset id="cesium-man" src="spidey.glb"></a-asset>
+      <a-asset id="cesium-man" src="CesiumMan.glb"></a-asset>
     </a-assets>
-    <a-entity id="walker" gltf-model="#cesium-man" position="1 -1 -5" scale="0.005 0.005 0.005" animation-mixer></a-entity>
+    <a-entity id="walker" gltf-model="#cesium-man" position="2 0 -5" scale="0.5 0.5 0.5" animation-mixer></a-entity>
   </a-scene>
   <script type="text/javascript">
     var video = document.querySelector('video');
@@ -60,19 +71,19 @@
     var arr=["walker"];
     var pos=[{x:-1,y:1}]
     // var arr=[],pos=[];
-    navigator.mediaDevices.getUserMedia({audio:true,video:{facingMode:{exact:"environment"}}})
-//     navigator.mediaDevices.getUserMedia({audio:true,video:true})
-    .then(function(stream){
+    // navigator.mediaDevices.getUserMedia({audio:true,video:{facingMode:{exact:"environment"}}})
+    // navigator.mediaDevices.getUserMedia({audio:true,video:true})
+    // .then(function(stream){
       
-       if ("srcObject" in video) {
-        video.srcObject = stream;
-       } else {
-        video.src = window.URL.createObjectURL(stream); 
-       }
-       video.onloadedmetadata = function(e) {
-        video.play();
-       }
-     });
+    //    if ("srcObject" in video) {
+    //     video.srcObject = stream;
+    //    } else {
+    //     video.src = window.URL.createObjectURL(stream); 
+    //    }
+    //    video.onloadedmetadata = function(e) {
+    //     video.play();
+    //    }
+    //  });
 
     var alpha1,beta1,gamma1,alpha2,beta2,gamma2;
     var x=-182,y=0;
@@ -88,16 +99,19 @@
       beta1=-beta1
       beta1=Math.round(beta1);
       gamma1=Math.round(gamma1);
-      // console.log(gamma1+" "+beta1)
+      console.log(gamma1+" "+beta1)
       // walker.setAttribute("position",`${x+gamma1} ${y+beta1} -5`);
-      document.getElementById("text").innerHTML=`${gamma1};${beta1}`
-// //       if(Math.abs(x-gamma1)>1){
-//         for(var i=0;i<arr.length;i++){
-//           document.getElementById(arr[i]).setAttribute("position",`${pos[i].x+gamma1} ${pos[i].y+beta1} -5`);
-//           document.getElementById("text").innerHTML=`${pos[i].x+gamma1};${pos[i].y+beta1}`
-//           x=gamma1;
-//         }
-//       }
+      
+      // for(var i=0;i<arr.length;i++){
+      //   if(Math.abs(x-gamma1)>1){
+      //     document.getElementById(arr[i]).setAttribute("position",`${pos[i].x+gamma1} ${pos[i].y+beta1} -5`);
+      //     document.getElementById("text").innerHTML=`${pos[i].x+gamma1};${pos[i].y+beta1}`
+      //     x=gamma1;
+      //   }
+      // }
+      // console.log()
+      // document.querySelector("a-canvas").style.left=gamma1;
+      // document.querySelector("a-canvas").style.top=beta1;
       
     }
 
