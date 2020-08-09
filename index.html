@@ -89,9 +89,9 @@
     var x=-182,y=0;
     var flag=0
 
+    document.querySelector("canvas").setAttribute("id","mycanvas");
 
-
-    window.addEventListener("deviceorientation", handleOrientation, true);
+    window.addEventListener("deviceorientation", handleOrientation, false);
     function handleOrientation(event) {
       alpha1 = event.alpha;
       beta1 = event.beta;
@@ -99,6 +99,8 @@
       beta1=-beta1
       beta1=Math.round(beta1);
       gamma1=Math.round(gamma1);
+      document.getElementById("mycanvas").style.left=gamma1+"px";
+      console.log(document.getElementById("mycanvas").style.left)
 //       console.log(gamma1+" "+beta1)
       // walker.setAttribute("position",`${x+gamma1} ${y+beta1} -5`);
       
