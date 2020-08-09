@@ -71,19 +71,19 @@
     var arr=["walker"];
     var pos=[{x:-1,y:1}]
     // var arr=[],pos=[];
-    // navigator.mediaDevices.getUserMedia({audio:true,video:{facingMode:{exact:"environment"}}})
-    // navigator.mediaDevices.getUserMedia({audio:true,video:true})
-    // .then(function(stream){
+    navigator.mediaDevices.getUserMedia({audio:true,video:{facingMode:{exact:"environment"}}})
+//     navigator.mediaDevices.getUserMedia({audio:true,video:true})
+    .then(function(stream){
       
-    //    if ("srcObject" in video) {
-    //     video.srcObject = stream;
-    //    } else {
-    //     video.src = window.URL.createObjectURL(stream); 
-    //    }
-    //    video.onloadedmetadata = function(e) {
-    //     video.play();
-    //    }
-    //  });
+       if ("srcObject" in video) {
+        video.srcObject = stream;
+       } else {
+        video.src = window.URL.createObjectURL(stream); 
+       }
+       video.onloadedmetadata = function(e) {
+        video.play();
+       }
+     });
 
     var alpha1,beta1,gamma1,alpha2,beta2,gamma2;
     var x=-182,y=0;
