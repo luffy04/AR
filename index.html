@@ -80,7 +80,7 @@
        }
      });
 
-    var alpha1,beta1,gamma1,alpha2,beta2,gamma2;
+    var alpha1,beta1,gamma1,alpha2,beta2,gamma2,flag=0,x=0;
     
     document.querySelector("canvas").setAttribute("id","mycanvas")
     window.addEventListener("orientationchange", function(event) {
@@ -88,14 +88,31 @@
     });
 
     window.addEventListener('deviceorientation', function(event) {
-        var a = event.alpha;
-        var b = event.beta;
-        var g = event.gamma;
-        // console.log(b)
-        // document.querySelector("canvas").style.left=gamma1;
-      document.getElementById("mycanvas").style.top=document.getElementById("mycanvas").offsetTop+b+"px";
-//       console.log(document.querySelector("canvas").offsetLeft)
-      document.getElementById("text").innerHTML=document.getElementById("mycanvas").offsetTop+b;
+      // if(flag==0){
+      //   alpha1 = event.alpha;
+      //   beta1 = event.beta;
+      //   gamma1 = event.gamma;
+      //   flag=1;
+      //   if(x!=0){
+      //     document.getElementById("mycanvas").style.left=document.getElementById("mycanvas").offsetLeft+gamma1-gamma2+"px";
+      //     document.getElementById("text").innerHTML=document.getElementById("mycanvas").offsetLeft;
+      //     x++;
+      //   }
+      // }else{
+      //   alpha2 = event.alpha;
+      //   beta2 = event.beta;
+      //   gamma2 = event.gamma;
+      //   document.getElementById("mycanvas").style.left=document.getElementById("mycanvas").offsetLeft+gamma1-gamma2+"px";
+      //   document.getElementById("text").innerHTML=document.getElementById("mycanvas").offsetLeft;
+      //   flag=0;
+      // }
+
+
+      alpha1 = event.alpha;
+      beta1 = event.beta;
+      gamma1 = event.gamma;
+      document.getElementById("mycanvas").style.left=5*gamma1-169+"px";
+      document.getElementById("text").innerHTML=document.getElementById("mycanvas").offsetLeft;
 
     }, false);
 
