@@ -38,14 +38,10 @@
       }
       .a-canvas{
         left: -169px;
+        top:0;
         position: absolute;
+        /*overflow: scroll;*/
       }
-/*       a-scene{
-        position: absolute;
-        left: 0px;
-        width: 49px;
-        height: 87px;
-      } */
     </style>
   </head>  
     
@@ -60,18 +56,18 @@
     <a-assets>
       <a-asset id="cesium-man" src="./spidey.glb"></a-asset>
     </a-assets>
-    <a-entity id="walker" gltf-model="#cesium-man" position="2 0 -5" scale="0.005 0.005 0.005" animation-mixer></a-entity>
+    <a-entity id="walker" gltf-model="#cesium-man" position="0 0 -5" scale="0.005 0.005 0.005" animation-mixer></a-entity>
   </a-scene>
   <script type="text/javascript">
     var video = document.querySelector('video');
     video.width=$(window).width();
     video.height=$(window).height();
     var size=1;
-//     var arr=["walker"];
-//     var pos=[{x:-1,y:1}]
+    var arr=["walker"];
+    var pos=[{x:-1,y:1}]
     // var arr=[],pos=[];
     navigator.mediaDevices.getUserMedia({audio:true,video:{facingMode:{exact:"environment"}}})
-//     navigator.mediaDevices.getUserMedia({audio:true,video:true})
+    // navigator.mediaDevices.getUserMedia({audio:true,video:true})
     .then(function(stream){
       
        if ("srcObject" in video) {
@@ -85,37 +81,47 @@
      });
 
     var alpha1,beta1,gamma1,alpha2,beta2,gamma2;
-    var x=-182,y=0;
-    var flag=0
+    
+    document.querySelector("canvas").setAttribute("id","mycanvas")
+    window.addEventListener("orientationchange", function(event) {
+      console.log("the orientation of the device is now " + event.target.screen.orientation.angle);
+    });
 
-    document.querySelector("canvas").setAttribute("id","mycanvas");
+    window.addEventListener('deviceorientation', function(event) {
+        var a = event.alpha;
+        var b = event.beta;
+        var g = event.gamma;
+        // console.log(b)
+        // document.querySelector("canvas").style.left=gamma1;
+      document.getElementById("mycanvas").style.left=document.getElementById("mycanvas").offsetLeft+g+"px";
+//       console.log(document.querySelector("canvas").offsetLeft)
+      document.getElementById("text").innerHTML=document.getElementById("mycanvas").offsetLeft+g;
 
-    window.addEventListener("deviceorientation", handleOrientation, false);
-    function handleOrientation(event) {
-      alpha1 = event.alpha;
-      beta1 = event.beta;
-      gamma1 = event.gamma;
-      beta1=-beta1
-      beta1=Math.round(beta1);
-      gamma1=Math.round(gamma1);
-      document.getElementById("mycanvas").style.left=document.getElementById("mycanvas").style.left+4*gamma1;
-      document.getElementById("text").innerHTML=document.getElementById("mycanvas").style.left;
-//       console.log(gamma1+" "+beta1)
-      // walker.setAttribute("position",`${x+gamma1} ${y+beta1} -5`);
+    }, false);
+
+
+    // window.addEventListener("deviceorientation", handleOrientation, true);
+    // function handleOrientation(event) {
+    //   alpha1 = event.alpha;
+    //   beta1 = event.beta;
+    //   gamma1 = event.gamma;
+    //   beta1=-beta1
+    //   beta1=Math.round(beta1);
+    //   gamma1=Math.round(gamma1);
+    //   // console.log(gamma1+" "+beta1)
+    //   // walker.setAttribute("position",`${x+gamma1} ${y+beta1} -5`);
       
-      // for(var i=0;i<arr.length;i++){
-      //   if(Math.abs(x-gamma1)>1){
-      //     document.getElementById(arr[i]).setAttribute("position",`${pos[i].x+gamma1} ${pos[i].y+beta1} -5`);
-      //     document.getElementById("text").innerHTML=`${pos[i].x+gamma1};${pos[i].y+beta1}`
-      //     x=gamma1;
-      //   }
-      // }
-      // console.log()
-      // document.querySelector("a-canvas").style.left=gamma1;
-      // document.querySelector("a-canvas").style.top=beta1;
-      
-    }
-
+    //   // for(var i=0;i<arr.length;i++){
+    //   //   if(Math.abs(x-gamma1)>1){
+    //   //     document.getElementById(arr[i]).setAttribute("position",`${pos[i].x+gamma1} ${pos[i].y+beta1} -5`);
+    //   //     document.getElementById("text").innerHTML=`${pos[i].x+gamma1};${pos[i].y+beta1}`
+    //   //     x=gamma1;
+    //   //   }
+    //   // }
+    //   // console.log()
+    //   document.querySelector("canvas").style.left=gamma1;
+    //   document.querySelector("canvas").style.top=beta1;
+    // }
 
     function display(name){
       console.log(name);
