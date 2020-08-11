@@ -88,7 +88,9 @@
       // if(gamma1<0)gamma1=Math.abs(gamma1)+180;
       document.getElementById("model").style.left=20*gamma1-0+"px";
       document.getElementById("upper").style.left=20*gamma1-0+"px";
-      document.getElementById("text").innerHTML=document.getElementById("model").offsetLeft;
+      document.getElementById("model").style.top=20*gamma1-2000+"px";
+      document.getElementById("upper").style.top=20*gamma1-2000+"px";
+      document.getElementById("text").innerHTML=document.getElementById("model").offsetLeft+";"+document.getElementById("model").offsetLeft;
 
     }, false);
 
