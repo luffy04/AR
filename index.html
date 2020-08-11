@@ -3,10 +3,6 @@
   <head>
     <title>Hello!</title>
     <meta charset="utf-8">
-    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
-    <script src="https://google-ar.github.io/three.ar.js/dist/three.ar.js"></script>
-    <script src="https://rawgit.com/chenzlabs/aframe-ar/827e9db/dist/aframe-ar.min.js"></script>
-    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/cfe5f316/dist/aframe-extras.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
@@ -38,12 +34,6 @@
       #text{
         color: blue;
       }
-      .a-canvas{
-        left: -169px;
-        top:0;
-        position: absolute;
-        /*overflow: scroll;*/
-      }
     </style>
   </head>  
     
@@ -51,7 +41,7 @@
   <model-viewer id="model" src="./CesiumMan.glb" camera-orbit="90deg 90deg 100%" style="position: absolute;left: 0;background-color: transparent;z-index: 2"></model-viewer>
   <button id="upper" onclick="dismiss()" style="position: absolute;left: 0;z-index: 3;width: 300px;height: 150px;position: absolute;background: transparent;border:none" id="upper"></button> 
   <video id="video" autoplay muted="true" style="position: absolute;top: 0;left: 0;"></video>
-  <span id="text"></span>
+  <span id="text" style="position:absolute;left:0"></span>
   <ul style="position: absolute;bottom: 0">
     <li><button onclick="display('spidey')" id="inside">Spidey</button></li>
     <li><button onclick="display('sylvanas')" id="inside">Sylvanas</button></li>
@@ -59,8 +49,8 @@
   
  <script type="text/javascript">
     var video = document.querySelector('video');
-    video.width=$(window).width();
-    video.height=$(window).height();
+//     video.width=$(window).width();
+//     video.height=$(window).height();
     var size=1;
 
     function dismiss(){
