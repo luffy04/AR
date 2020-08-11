@@ -52,12 +52,14 @@
     <model-viewer id="model" src="./CesiumMan.glb" camera-orbit="90deg 90deg 100%" style="position: absolute;background-color: transparent;z-index: 2"></model-viewer>
     <button onclick="dismiss()" style="z-index: 3;width: 300px;height: 150px;position: absolute;background: transparent;border:none" id="upper"></button> 
   </span>
-  <video id="video" autoplay muted="true" style="position: absolute;top: 0;left: 0;"></video>
-  <span id="text"></span>
-  <ul>
-    <li><button onclick="display('spidey')" id="inside">Spidey</button></li>
-    <li><button onclick="display('sylvanas')" id="inside">Sylvanas</button></li>
-  </ul>
+  <div style="position: absolute;top: 0;left: 0;">
+    <video id="video" autoplay muted="true"></video>
+    <span id="text"></span>
+    <ul>
+      <li><button onclick="display('spidey')" id="inside">Spidey</button></li>
+      <li><button onclick="display('sylvanas')" id="inside">Sylvanas</button></li>
+    </ul>
+  </div>
 
  <script type="text/javascript">
     var video = document.querySelector('video');
