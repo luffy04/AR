@@ -3,6 +3,10 @@
   <head>
     <title>Hello!</title>
     <meta charset="utf-8">
+    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
+    <script src="https://google-ar.github.io/three.ar.js/dist/three.ar.js"></script>
+    <script src="https://rawgit.com/chenzlabs/aframe-ar/827e9db/dist/aframe-ar.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/cfe5f316/dist/aframe-extras.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
@@ -43,19 +47,27 @@
     </style>
   </head>  
     
-<body>
-  <div style="position: absolute;">
-    <model-viewer id="model" src="./CesiumMan.glb" camera-orbit="90deg 90deg 100%" style="background-color: transparent;z-index: 2"></model-viewer>
-    <button id="upper" onclick="dismiss()" style="z-index: 3;width: 300px;height: 150px;position: absolute;background: transparent;border:none"></button> 
-    <video id="video" autoplay muted="true" style="left: 0;z-index:-1"></video>
-    <span id="text"></span>
-    <div style="top: 100px">
-      <ul>
+<body style="position: absolute;width: 100%;height: 100%">
+  <!-- <div style="position: absolute;"> -->
+    <model-viewer id="model" src="./CesiumMan.glb" camera-orbit="90deg 90deg 100%" style="position: absolute;left: 0;background-color: transparent;z-index: 2"></model-viewer>
+    <button id="upper" onclick="dismiss()" style="position: absolute;left: 0;z-index: 3;width: 300px;height: 150px;position: absolute;background: transparent;border:none" id="upper"></button> 
+    <video id="video" autoplay muted="true" style="position: absolute;left: 0;object-fit: fill"></video>
+    <span id="text" style="position: absolute;top:200px"></span>
+    <!-- <div style="top: 100px"> -->
+      <ul style="position: absolute;bottom: 0">
         <li><button onclick="display('spidey')" id="inside">Spidey</button></li>
         <li><button onclick="display('sylvanas')" id="inside">Sylvanas</button></li>
       </ul>
-    </div>
-  </div>
+    <!-- </div> -->
+  <!-- </div> -->
+
+  <!-- <a-scene ar>
+    <a-assets>
+      <a-asset id="cesium-man" src="./spidey.glb"></a-asset>
+    </a-assets>
+    <a-entity id="walker" gltf-model="#cesium-man" position="0 0 -5" scale="0.005 0.005 0.005" animation-mixer></a-entity>
+  </a-scene>
+ -->  
 
  <script type="text/javascript">
     var video = document.querySelector('video');
@@ -67,6 +79,8 @@
       console.log("dsf")
     }
 
+    
+    // var arr=[],pos=[];
     navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{exact:"environment"}}})
     // navigator.mediaDevices.getUserMedia({audio:true,video:true})
     .then(function(stream){
@@ -87,14 +101,40 @@
       var alpha1 = event.alpha;
       var beta1 = event.beta;
       var gamma1 = event.gamma;
+      beta1=Math.round(beta1);
+      gamma1=Math.round(gamma1);
       // if(gamma1<0)gamma1=Math.abs(gamma1)+180;
       document.getElementById("model").style.left=20*gamma1-0+"px";
       document.getElementById("upper").style.left=20*gamma1-0+"px";
-      document.getElementById("model").style.top=20*gamma1-2000+"px";
-      document.getElementById("upper").style.top=20*gamma1-2000+"px";
-      document.getElementById("text").innerHTML=document.getElementById("model").offsetLeft+";"+document.getElementById("model").offsetLeft;
+      document.getElementById("model").style.top=20*beta1-1800+"px";
+      document.getElementById("upper").style.top=20*beta1-1800+"px";
+      document.getElementById("text").innerHTML=document.getElementById("model").offsetLeft+";"+document.getElementById("model").offsetTop;
 
     }, false);
+
+
+    // window.addEventListener("deviceorientation", handleOrientation, true);
+    // function handleOrientation(event) {
+    //   alpha1 = event.alpha;
+    //   beta1 = event.beta;
+    //   gamma1 = event.gamma;
+    //   beta1=-beta1
+    //   beta1=Math.round(beta1);
+    //   gamma1=Math.round(gamma1);
+    //   // console.log(gamma1+" "+beta1)
+    //   // walker.setAttribute("position",`${x+gamma1} ${y+beta1} -5`);
+      
+    //   // for(var i=0;i<arr.length;i++){
+    //   //   if(Math.abs(x-gamma1)>1){
+    //   //     document.getElementById(arr[i]).setAttribute("position",`${pos[i].x+gamma1} ${pos[i].y+beta1} -5`);
+    //   //     document.getElementById("text").innerHTML=`${pos[i].x+gamma1};${pos[i].y+beta1}`
+    //   //     x=gamma1;
+    //   //   }
+    //   // }
+    //   // console.log()
+    //   document.querySelector("canvas").style.left=gamma1;
+    //   document.querySelector("canvas").style.top=beta1;
+    // }
 
     function display(name){
       console.log(name);
