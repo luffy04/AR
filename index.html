@@ -8,170 +8,6 @@
     <script src="https://rawgit.com/chenzlabs/aframe-ar/827e9db/dist/aframe-ar.min.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/cfe5f316/dist/aframe-extras.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
-    <style>
-      ul{
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        position: absolute;
-        bottom: 0;
-        z-index: 2
-      }
-      li{
-        float: left;
-        background-color: white;
-        width: 50px;
-        height: 50px;
-        border-radius: 10px;
-        padding: 18px;
-        margin-right: 10px;
-      }
-      #inside{
-        border:1px solid orange;
-        border-radius: 10px;
-        width: 100%;
-        height: 100%;
-        background: none;
-      }
-      #text{
-        color: blue;
-      }
-      .a-canvas{
-        left: -169px;
-        top:0;
-        position: absolute;
-        /*overflow: scroll;*/
-      }
-    </style>
-  </head>  
-    
-<body style="position: absolute;width: 100%;height: 100%">
-  <!-- <div style="position: absolute;"> -->
-    <model-viewer id="model" src="./CesiumMan.glb" camera-orbit="90deg 90deg 100%" style="position: absolute;left: 0;background-color: transparent;z-index: 2"></model-viewer>
-    <button id="upper" onclick="dismiss()" style="position: absolute;left: 0;z-index: 3;width: 300px;height: 150px;position: absolute;background: transparent;border:none" id="upper"></button> 
-    <video id="video" autoplay muted="true" style="position: absolute;left: 0;object-fit: fill"></video>
-    <span id="text" style="position: absolute;top:200px"></span>
-    <!-- <div style="top: 100px"> -->
-      <ul style="position: absolute;bottom: 0">
-        <li><button onclick="display('spidey')" id="inside">Spidey</button></li>
-        <li><button onclick="display('sylvanas')" id="inside">Sylvanas</button></li>
-      </ul>
-    <!-- </div> -->
-  <!-- </div> -->
-
-  <!-- <a-scene ar>
-    <a-assets>
-      <a-asset id="cesium-man" src="./spidey.glb"></a-asset>
-    </a-assets>
-    <a-entity id="walker" gltf-model="#cesium-man" position="0 0 -5" scale="0.005 0.005 0.005" animation-mixer></a-entity>
-  </a-scene>
- -->  
-
- <script type="text/javascript">
-    var video = document.querySelector('video');
-    video.width=$(window).width();
-    video.height=$(window).height();
-    var size=1;
-
-    function dismiss(){
-      console.log("dsf")
-    }
-
-    
-    // var arr=[],pos=[];
-    navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{exact:"environment"}}})
-    // navigator.mediaDevices.getUserMedia({audio:true,video:true})
-    .then(function(stream){
-      
-       if ("srcObject" in video) {
-        video.srcObject = stream;
-       } else {
-        video.src = window.URL.createObjectURL(stream); 
-       }
-       video.onloadedmetadata = function(e) {
-        video.play();
-       }
-     });
-
-
-    window.addEventListener('deviceorientation', function(event) {
-
-      var alpha1 = event.alpha;
-      var beta1 = event.beta;
-      var gamma1 = event.gamma;
-      beta1=Math.round(beta1);
-      gamma1=Math.round(gamma1);
-      // if(gamma1<0)gamma1=Math.abs(gamma1)+180;
-      document.getElementById("model").style.left=20*gamma1-0+"px";
-      document.getElementById("upper").style.left=20*gamma1-0+"px";
-      document.getElementById("model").style.top=20*beta1-1800+"px";
-      document.getElementById("upper").style.top=20*beta1-1800+"px";
-      document.getElementById("text").innerHTML=document.getElementById("model").offsetLeft+";"+document.getElementById("model").offsetTop;
-
-    }, false);
-
-
-    // window.addEventListener("deviceorientation", handleOrientation, true);
-    // function handleOrientation(event) {
-    //   alpha1 = event.alpha;
-    //   beta1 = event.beta;
-    //   gamma1 = event.gamma;
-    //   beta1=-beta1
-    //   beta1=Math.round(beta1);
-    //   gamma1=Math.round(gamma1);
-    //   // console.log(gamma1+" "+beta1)
-    //   // walker.setAttribute("position",`${x+gamma1} ${y+beta1} -5`);
-      
-    //   // for(var i=0;i<arr.length;i++){
-    //   //   if(Math.abs(x-gamma1)>1){
-    //   //     document.getElementById(arr[i]).setAttribute("position",`${pos[i].x+gamma1} ${pos[i].y+beta1} -5`);
-    //   //     document.getElementById("text").innerHTML=`${pos[i].x+gamma1};${pos[i].y+beta1}`
-    //   //     x=gamma1;
-    //   //   }
-    //   // }
-    //   // console.log()
-    //   document.querySelector("canvas").style.left=gamma1;
-    //   document.querySelector("canvas").style.top=beta1;
-    // }
-
-    function display(name){
-      console.log(name);
-      var asset=document.createElement("a-asset");
-      asset.setAttribute("src",`${name}.glb`);
-      asset.setAttribute("id",`${name}1`);
-      var assets=document.querySelector("a-assets");
-      assets.append(asset);
-
-      var entity=document.createElement("a-entity");
-      entity.setAttribute("gltf-model",`#${name}1`);
-      entity.setAttribute("position",`${gamma1} ${beta1} -5`);
-      entity.setAttribute("scale",`0.005 0.005 0.005`);
-      entity.setAttribute("id",`${name}`);
-      console.log(entity);
-      arr.push(name);
-      var obj={x:gamma1,y:-beta1};
-      pos.push(obj);
-      var scene=document.querySelector("a-scene");
-      scene.append(entity);
-      size++;
-    }
-  </script>
-  
-</body>
-</html>
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Hello!</title>
-    <meta charset="utf-8">
-    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
-    <script src="https://google-ar.github.io/three.ar.js/dist/three.ar.js"></script>
-    <script src="https://rawgit.com/chenzlabs/aframe-ar/827e9db/dist/aframe-ar.min.js"></script>
-    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/cfe5f316/dist/aframe-extras.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <style>
       ul{
         list-style-type: none;
@@ -210,7 +46,7 @@
   </head>  
     
 <body>
-  <video id="video" autoplay muted="true" style="position: absolute;top: 0;left: 0;"></video>
+  <video id="video" autoplay muted="true" style="position: absolute;top: 0;left: 0;object-fit: fill;"></video>
   <span id="text"></span>
   <ul>
     <li><button onclick="display('spidey')" id="inside">Spidey</button></li>
@@ -220,8 +56,9 @@
     <a-assets>
       <a-asset id="cesium-man" src="./spidey.glb"></a-asset>
     </a-assets>
-    <a-entity id="walker" gltf-model="#cesium-man" position="0 0 -5" scale="0.005 0.005 0.005" animation-mixer></a-entity>
+    <a-entity id="walker" gltf-model="#cesium-man" look-controls="enabled: false" position="0 0 -5" scale="0.005 0.005 0.005" animation-mixer></a-entity>
   </a-scene>
+
   <script type="text/javascript">
     var video = document.querySelector('video');
     video.width=$(window).width();
@@ -229,7 +66,10 @@
     var size=1;
     var arr=["walker"];
     var pos=[{x:-1,y:1}]
-    navigator.mediaDevices.getUserMedia({audio:true,video:{facingMode:{exact:"environment"}}})
+
+    // navigator.mediaDevices.getUserMedia({audio:true,video:{facingMode:{exact:"environment"}}})
+
+    navigator.mediaDevices.getUserMedia({audio:true,video:true})
     .then(function(stream){
       
        if ("srcObject" in video) {
@@ -241,13 +81,18 @@
         video.play();
        }
      });
-
     var alpha1,beta1,gamma1,alpha2,beta2,gamma2,flag=0,x=0;
     
     document.querySelector("canvas").setAttribute("id","mycanvas")
-    window.addEventListener("orientationchange", function(event) {
-      console.log("the orientation of the device is now " + event.target.screen.orientation.angle);
-    });
+
+
+    window.onload=function(){
+      console.log(document.querySelectorAll("a-entity"))
+      var tsm=document.querySelectorAll("a-entity")[1];
+      tsm.removeAttribute("look-controls");
+    }
+
+    // canvas.addEventListener("click",)
 
     window.addEventListener('deviceorientation', function(event) {
       alpha1 = event.alpha;
@@ -256,7 +101,6 @@
       document.getElementById("mycanvas").style.left=20*Math.round(gamma1)-169+"px";
       document.getElementById("mycanvas").style.top=20*Math.round(beta1)-2000+"px";
       document.getElementById("text").innerHTML=document.getElementById("mycanvas").offsetLeft+";"+document.getElementById("mycanvas").offsetTop;
-
     }, false);
 
     function display(name){
@@ -266,7 +110,6 @@
       asset.setAttribute("id",`${name}1`);
       var assets=document.querySelector("a-assets");
       assets.append(asset);
-
       var entity=document.createElement("a-entity");
       entity.setAttribute("gltf-model",`#${name}1`);
       entity.setAttribute("position",`${gamma1} ${beta1} -5`);
@@ -283,4 +126,3 @@
   </script>
 </body>
 </html>
- -->
