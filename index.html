@@ -37,42 +37,43 @@
         color: blue;
       }
       .a-canvas{
-        left: -169px;
+        left: 0px;
         top:0;
         position: absolute;
-        z-index:2;
-        /*overflow: scroll;*/
       }
     </style>
   </head>  
     
 <body>
-  <video id="video" autoplay muted="true" style="position: absolute;top: 0;left: 0;object-fit: fill;z-index:1"></video>
-  <span id="text" style="position:absolute;z-index:2"></span>
+  <video id="video" autoplay muted="true" style="position: absolute;top: 0;left: 0;object-fit: fill;"></video>
+  <span id="text" style="z-index: 1;position: absolute;"></span>
   <ul>
     <li><button onclick="display('spidey')" id="inside">Spidey</button></li>
     <li><button onclick="display('sylvanas')" id="inside">Sylvanas</button></li>
   </ul>
   <a-scene ar>
     <a-assets>
-      <a-asset id="cesium-man" src="./CesiumMan.glb"></a-asset>
+      <a-asset id="cesium-man" src="./spidey.glb"></a-asset>
     </a-assets>
-    <a-entity id="walker" gltf-model="#cesium-man" look-controls="enabled: false" position="0 0 -5" scale="0.5 0.5 0.5" animation-mixer></a-entity>
+    <a-entity id="walker" gltf-model="#cesium-man" look-controls="enabled: false" position="0 0 -5" scale="0.005 0.005 0.005" animation-mixer></a-entity>
   </a-scene>
 
   <script type="text/javascript">
     var video = document.querySelector('video');
     video.width=$(window).width();
     video.height=$(window).height();
+
+    document.querySelector("canvas").setAttribute("id","mycanvas")
+    var xaxis=Math.round(document.getElementById("mycanvas").offsetWidth/90);
+    var yaxis=Math.round(document.getElementById("mycanvas").offsetHeight/180);
+    console.log(xaxis+" "+yaxis)
     var size=1;
     var arr=["walker"];
     var pos=[{x:-1,y:1}]
 
     navigator.mediaDevices.getUserMedia({audio:true,video:{facingMode:{exact:"environment"}}})
-
-//     navigator.mediaDevices.getUserMedia({audio:true,video:true})
+    // navigator.mediaDevices.getUserMedia({audio:true,video:true})
     .then(function(stream){
-      
        if ("srcObject" in video) {
         video.srcObject = stream;
        } else {
@@ -82,10 +83,10 @@
         video.play();
        }
      });
-    var alpha1,beta1,gamma1,alpha2,beta2,gamma2,flag=0,x=0;
-    
-    document.querySelector("canvas").setAttribute("id","mycanvas")
 
+    var alpha1,beta1,gamma1;
+    
+    
 
     window.onload=function(){
       console.log(document.querySelectorAll("a-entity"))
@@ -93,15 +94,16 @@
       tsm.removeAttribute("look-controls");
     }
 
-    // canvas.addEventListener("click",)
-
     window.addEventListener('deviceorientation', function(event) {
       alpha1 = event.alpha;
-      beta1 = event.beta;
-      gamma1 = event.gamma;
-      document.getElementById("mycanvas").style.left=20*Math.round(gamma1)-169+"px";
-      document.getElementById("mycanvas").style.top=20*Math.round(beta1)-2000+"px";
-      document.getElementById("text").innerHTML=document.getElementById("mycanvas").offsetLeft+";"+document.getElementById("mycanvas").offsetTop;
+      beta1 = Math.round(event.beta);
+      gamma1 = Math.round(event.gamma);
+
+
+      document.getElementById("mycanvas").style.left=(xaxis*gamma1)-0+"px";
+      document.getElementById("mycanvas").style.top=(yaxis*beta1)-0+"px";
+      document.getElementById("text").innerHTML=document.getElementById("mycanvas").offsetLeft+";"+document.getElementById("mycanvas").offsetTop
+      // document.getElementById("text").innerHTML=Math.round(xaxis*gamma1)+";"+Math.round(yaxis*beta1);
     }, false);
 
     function display(name){
@@ -113,17 +115,18 @@
       assets.append(asset);
       var entity=document.createElement("a-entity");
       entity.setAttribute("gltf-model",`#${name}1`);
-      entity.setAttribute("position",`${gamma1} ${beta1} -5`);
+      // entity.setAttribute("position",`${gamma1} ${beta1} -5`);
+      entity.setAttribute("position",`0 0 -5`);
       entity.setAttribute("scale",`0.005 0.005 0.005`);
       entity.setAttribute("id",`${name}`);
-      console.log(entity);
       arr.push(name);
-      var obj={x:gamma1,y:-beta1};
+      var obj={x:20*gamma1,y:20*beta1};
       pos.push(obj);
       var scene=document.querySelector("a-scene");
       scene.append(entity);
       size++;
     }
+
   </script>
 </body>
 </html>
