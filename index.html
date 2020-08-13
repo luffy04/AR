@@ -53,9 +53,11 @@
   </ul>
   <a-scene ar>
     <a-assets>
-      <a-asset id="cesium-man" src="./spidey.glb"></a-asset>
+      <a-asset id="cesium-man" src="./CesiumMan.glb"></a-asset>
+      <a-asset id="spidey-man" src="./spidey.glb"></a-asset>
     </a-assets>
-    <a-entity id="walker" gltf-model="#cesium-man" look-controls="enabled: false" position="0 0 -5" scale="0.005 0.005 0.005" animation-mixer></a-entity>
+    <a-entity id="walker" gltf-model="#cesium-man" look-controls="enabled: false" position="0 0 -5" scale="0.5 0.5 0.5" animation-mixer></a-entity>
+    <a-entity id="walker" gltf-model="#spidey-man" look-controls="enabled: false" position="0 0 -5" scale="0.005 0.005 0.005" animation-mixer></a-entity>
   </a-scene>
 
   <script type="text/javascript">
@@ -64,11 +66,11 @@
     video.height=$(window).height();
 
     document.querySelector("canvas").setAttribute("id","mycanvas")
-    var xaxis=Math.round(document.getElementById("mycanvas").offsetWidth/90);
-    var yaxis=Math.round(document.getElementById("mycanvas").offsetHeight/180);
+    var xaxis=document.getElementById("mycanvas").offsetWidth/90;
+    var yaxis=document.getElementById("mycanvas").offsetHeight/180;
     console.log(xaxis+" "+yaxis)
     var size=1;
-    var arr=["walker"];
+    var arr=["walker","spidey"];
     var pos=[{x:-1,y:1}]
 
     navigator.mediaDevices.getUserMedia({audio:true,video:{facingMode:{exact:"environment"}}})
