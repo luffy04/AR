@@ -8,7 +8,15 @@
     <script src="https://rawgit.com/chenzlabs/aframe-ar/827e9db/dist/aframe-ar.min.js"></script>
     <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/cfe5f316/dist/aframe-extras.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
     <style>
+      *{
+        overflow: hidden;
+      }
+      html,body{
+        height: 100%;
+      }
       ul{
         list-style-type: none;
         margin: 0;
@@ -34,7 +42,9 @@
         background: none;
       }
       #text{
-        color: blue;
+        color: red;
+        font-size: 800;
+        font-weight: bold;
       }
       .a-canvas{
         left: 0px;
@@ -48,30 +58,37 @@
   <video id="video" autoplay muted="true" style="position: absolute;top: 0;left: 0;object-fit: fill;"></video>
   <span id="text" style="z-index: 1;position: absolute;"></span>
   <ul>
-    <li><button onclick="display('spidey')" id="inside">Spidey</button></li>
-    <li><button onclick="display('sylvanas')" id="inside">Sylvanas</button></li>
+    <li><button onclick="display('batman')" id="inside">Batman</button></li>
+    <li><button onclick="display('CesiumMan')" id="inside">Walker</button></li>
   </ul>
-  <a-scene ar>
+<!-- 
+  <model-viewer src="batman.glb" id="batman" style="left: -2248px;top: -100px"></model-viewer>
+  <model-viewer src="CesiumMan.glb" id="walker" style="left: -1000px;top: -200px"></model-viewer> -->
+
+  <!-- <a-scene ar>
     <a-assets>
-      <a-asset id="cesium-man" src="./CesiumMan.glb"></a-asset>
+      <a-asset id="cesium-man" src="./sylvanas.glb"></a-asset>
       <a-asset id="spidey-man" src="./spidey.glb"></a-asset>
     </a-assets>
-    <a-entity id="walker" gltf-model="#cesium-man" look-controls="enabled: false" position="0 0 -5" scale="0.5 0.5 0.5" animation-mixer></a-entity>
-    <a-entity id="walker" gltf-model="#spidey-man" look-controls="enabled: false" position="0 0 -5" scale="0.005 0.005 0.005" animation-mixer></a-entity>
-  </a-scene>
+    <a-entity id="walker" gltf-model="#cesium-man" look-controls="enabled: false" position="-2 0 -5" scale="0.005 0.005 0.005"></a-entity>
+    <a-entity id="walker" gltf-model="#spidey-man" look-controls="enabled: false" position="0 0 -5" scale="0.005 0.005 0.005"></a-entity>
+  </a-scene> -->
 
   <script type="text/javascript">
     var video = document.querySelector('video');
     video.width=$(window).width();
     video.height=$(window).height();
 
-    document.querySelector("canvas").setAttribute("id","mycanvas")
-    var xaxis=document.getElementById("mycanvas").offsetWidth/90;
-    var yaxis=document.getElementById("mycanvas").offsetHeight/180;
-    console.log(xaxis+" "+yaxis)
+    // document.querySelector("canvas").setAttribute("id","mycanvas");
+    // var xaxis=document.getElementById("mycanvas").offsetWidth/90;
+    // var yaxis=document.getElementById("mycanvas").offsetHeight/180;
+    // console.log(xaxis+" "+yaxis);
+
     var size=1;
-    var arr=["walker","spidey"];
-    var pos=[{x:-1,y:1}]
+    var arr=[];
+    var pos=[];
+    // var arr=["batman","walker"];
+    // var pos=[{x:-2248,y:-100},{x:-1000,y:-200}]
 
     navigator.mediaDevices.getUserMedia({audio:true,video:{facingMode:{exact:"environment"}}})
     // navigator.mediaDevices.getUserMedia({audio:true,video:true})
@@ -88,45 +105,62 @@
 
     var alpha1,beta1,gamma1;
     
-    
-
-    window.onload=function(){
-      console.log(document.querySelectorAll("a-entity"))
-      var tsm=document.querySelectorAll("a-entity")[1];
-      tsm.removeAttribute("look-controls");
-    }
+    // window.onload=function(){
+    //   console.log(document.querySelectorAll("a-entity"))
+    //   var tsm=document.querySelectorAll("a-entity")[1];
+    //   tsm.removeAttribute("look-controls");
+    // }
 
     window.addEventListener('deviceorientation', function(event) {
+
       alpha1 = event.alpha;
       beta1 = Math.round(event.beta);
       gamma1 = Math.round(event.gamma);
 
+      for(var i=0;i<arr.length;i++){
+        document.getElementById(`${arr[i]}`).style.left=40*gamma1+pos[i].x+"px";
+        document.getElementById(`${arr[i]}`).style.top=40*beta1+pos[i].y+"px";
+      }
+      // document.getElementById("model").style.top=40*beta1+"px";
 
-      document.getElementById("mycanvas").style.left=(xaxis*gamma1)-0+"px";
-      document.getElementById("mycanvas").style.top=(yaxis*beta1)-0+"px";
-      document.getElementById("text").innerHTML=document.getElementById("mycanvas").offsetLeft+";"+document.getElementById("mycanvas").offsetTop
+      document.getElementById("text").innerHTML=40*gamma1+";"+40*beta1;
+
+      // document.getElementById("mycanvas").style.left=(xaxis*gamma1)-0+"px";
+      // document.getElementById("mycanvas").style.top=(yaxis*beta1)-0+"px";
+      // document.getElementById("text").innerHTML=document.getElementById("mycanvas").offsetLeft+";"+document.getElementById("mycanvas").offsetTop
       // document.getElementById("text").innerHTML=Math.round(xaxis*gamma1)+";"+Math.round(yaxis*beta1);
+
     }, false);
 
     function display(name){
-      console.log(name);
-      var asset=document.createElement("a-asset");
-      asset.setAttribute("src",`${name}.glb`);
-      asset.setAttribute("id",`${name}1`);
-      var assets=document.querySelector("a-assets");
-      assets.append(asset);
-      var entity=document.createElement("a-entity");
-      entity.setAttribute("gltf-model",`#${name}1`);
-      // entity.setAttribute("position",`${gamma1} ${beta1} -5`);
-      entity.setAttribute("position",`0 0 -5`);
-      entity.setAttribute("scale",`0.005 0.005 0.005`);
-      entity.setAttribute("id",`${name}`);
+      // console.log(name);
+      // var asset=document.createElement("a-asset");
+      // asset.setAttribute("src",`${name}.glb`);
+      // asset.setAttribute("id",`${name}1`);
+      // var assets=document.querySelector("a-assets");
+      // assets.append(asset);
+      // var entity=document.createElement("a-entity");
+      // entity.setAttribute("gltf-model",`#${name}1`);
+      // // entity.setAttribute("position",`${gamma1} ${beta1} -5`);
+      // entity.setAttribute("position",`0 0 -5`);
+      // entity.setAttribute("scale",`0.005 0.005 0.005`);
+      // entity.setAttribute("id",`${name}`);
+      // arr.push(name);
+      // var obj={x:20*gamma1,y:20*beta1};
+      // pos.push(obj);
+      // var scene=document.querySelector("a-scene");
+      // scene.append(entity);
+      // size++;
+      var model_viewer=document.createElement("model-viewer");
+      model_viewer.setAttribute("src",`${name}.glb`);
+      model_viewer.setAttribute("id",`${name}`);
+      model_viewer.style.left=gamma1;
+      model_viewer.style.top=beta1;
+      var body=document.querySelector("body");
+      body.append(model_viewer);
       arr.push(name);
-      var obj={x:20*gamma1,y:20*beta1};
+      var obj={x:-40*gamma1,y:-40*beta1};
       pos.push(obj);
-      var scene=document.querySelector("a-scene");
-      scene.append(entity);
-      size++;
     }
 
   </script>
